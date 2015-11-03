@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- design responsivo -->
+  <meta name="viewport" content="width=device-width; initial-scale=1.0">
+  <title>CookEtec</title>
+  <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+  <style type="text/css">
+    a.excluir {
+      border: 1px solid gray;
+      background-color: red;
+      padding: 0.2em;
+      margin-left: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>CookEtec</h1>
+  <h2>Nova receita</h2>
+  <form onsubmit="return false;">
+    <div id="erro" style="color: red;"></div>
+    <label>Título:</label>
+    <input type="text" name="titulo"
+      title="O título deve ter pelo menos 5 letras"
+      required pattern=".{5,}"><!-- expressão regular -->
+    <br>
+    <small>O título deve ter pelo menos 5 letras</small>
+    <br>
+    <label>Receita:</label>
+    <br>
+    <textarea name="receita" title="A receita deve ter pelo menos 15 letras"></textarea>
+    <br>
+    <small>A receita deve ter pelo menos 15 letras</small>
+    <br>
+    <input type="submit" value="Adicionar Receita">
+    <input type="reset" value="Limpar">
+  </form>
+  <h2>Lista de Receitas</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Receita</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <script type="text/javascript">
+  $(function() {
+    $("form").submit(function() {
+      var titulo = $('input[name=titulo]').val();
+      var receita = $('textarea[name=receita]').val();
+
+      var erro = false;
+      // if (titulo.length < 5) erro = true;
+      if (receita.length < 15) erro = true;
+
+      if (erro) {
+        $('div#erro').text("Receita deve ter pelo menos 15 letras");
+      } else {
+        var tr = document.createElement('tr');
+        var td_titulo = document.createElement('td');
+        var td_receita = document.createElement('td');
+
+        $(td_titulo).text(titulo);
+        $(td_receita).text(receita);
+        var td_excluir =  document.createElement('td');
+        var ancora = document.createElement('a');
+        ancora.href = '#';
+        $(ancora).text('Excluir');
+        $(ancora).addClass('excluir');
+        td_excluir.appendChild(ancora);
+        tr.appendChild(td_titulo);
+        tr.appendChild(td_receita);
+        tr.appendChild(td_excluir);
+        $('tbody').append(tr);
+      }
+    });
+    $(document).on('click', 'a.excluir', function() {
+      if (confirm("Remover esta receita?")) {
+        $(this).parent().parent().remove();
+      }
+    });
+  });
+  </script>
+</body>
+</html>
